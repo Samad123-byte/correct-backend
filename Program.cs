@@ -21,7 +21,7 @@ builder.Services.AddControllers()
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// Add CORS
+// ✅ FIXED: Add CORS with proper configuration
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("ReactApp", policy =>
@@ -45,8 +45,7 @@ builder.Services.AddScoped<ISalespersonService, SalespersonService>();
 
 var app = builder.Build();
 
-app.UseMiddleware<GlobalExceptionHandlerMiddleware>();
-
+// ✅ IMPORTANT: Use middleware in correct order
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -54,9 +53,14 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+// ✅ CORS must come BEFORE Authorization and Controllers
 app.UseCors("ReactApp");
-app.UseMiddleware<Backend.Middleware.GlobalExceptionHandlerMiddleware>();
+
+// ✅ REMOVED DUPLICATE: Only register exception handler ONCE
+app.UseMiddleware<GlobalExceptionHandlerMiddleware>();
 
 app.UseAuthorization();
 app.MapControllers();
+
 app.Run();
