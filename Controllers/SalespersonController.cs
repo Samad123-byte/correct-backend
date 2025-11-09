@@ -1,4 +1,4 @@
-﻿using Backend.DTOs.Requests;
+using Backend.DTOs.Requests;
 using Backend.DTOs.Responses;
 using Backend.IServices;
 using Microsoft.AspNetCore.Mvc;
@@ -16,8 +16,8 @@ namespace Backend.Controllers
             _salespersonService = salespersonService;
         }
 
-        [HttpGet("getall")]
-        public async Task<ActionResult<PaginatedResponse<SalespersonResponse>>> GetAll([FromQuery] PaginationRequest request)
+        [HttpPost("getall")]  
+        public async Task<ActionResult<PaginatedResponse<SalespersonResponse>>> GetAll([FromBody] PaginationRequest request)  // Changed from [FromQuery]
         {
             var response = await _salespersonService.GetAllSalespersonsAsync(request);
             response.Success = true;
