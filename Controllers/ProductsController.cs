@@ -1,4 +1,4 @@
-﻿using Backend.DTOs.Requests;
+using Backend.DTOs.Requests;
 using Backend.DTOs.Responses;
 using Backend.IServices;
 using Microsoft.AspNetCore.Mvc;
@@ -16,8 +16,8 @@ namespace Backend.Controllers
             _productService = productService;
         }
 
-        [HttpGet("getAll")]
-        public async Task<ActionResult<PaginatedResponse<ProductResponse>>> GetProducts([FromQuery] PaginationRequest request)
+        [HttpPost("getAll")] 
+        public async Task<ActionResult<PaginatedResponse<ProductResponse>>> GetProducts([FromBody] PaginationRequest request)  // Changed from [FromQuery]
         {
             var response = await _productService.GetAllProductsAsync(request);
             response.Success = true;
