@@ -1,4 +1,4 @@
-﻿using Backend.DTOs.Requests;
+using Backend.DTOs.Requests;
 using Backend.DTOs.Responses;
 using Backend.IServices;
 using Microsoft.AspNetCore.Mvc;
@@ -16,8 +16,9 @@ namespace Backend.Controllers
             _saleService = saleService;
         }
 
-        [HttpGet]
-        public async Task<ActionResult<PaginatedResponse<SaleResponse>>> GetSales([FromQuery] PaginationRequest request)
+       
+        [HttpPost("getAll")]
+        public async Task<ActionResult<PaginatedResponse<SaleResponse>>> GetSales([FromBody] PaginationRequest request)
         {
             var response = await _saleService.GetAllSalesAsync(request);
             response.Success = true;
@@ -43,7 +44,8 @@ namespace Backend.Controllers
             return Ok(response);
         }
 
-        [HttpPost]
+        // ✅ FIXED: Added "create" route to differentiate from getAll
+        [HttpPost("create")]
         public async Task<ActionResult<ApiResponse<SaleResponse>>> CreateSale([FromBody] CreateSaleRequest request)
         {
             var response = await _saleService.CreateSaleAsync(request);
